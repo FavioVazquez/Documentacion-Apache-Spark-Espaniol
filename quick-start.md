@@ -388,3 +388,27 @@ $ YOUR_SPARK_HOME/bin/spark-submit \
 ...
 Lines with a: 46, Lines with b: 23
 ```
+
+## A dónde ir desde aquí
+
+¡Felicitaciones en correr tu primera aplicación de Spark!
+
+- Para una vista generalizada más profunda de la API, comienza con la [guía de programación de Spark](http://spark.apache.org/docs/latest/programming-guide.html), o ve el menú "Guías de programación" para otros componentes.
+
+- Para correr aplicaciones en un cluster, dirígete a la [vista generalizada de despliegue](http://spark.apache.org/docs/latest/cluster-overview.html)
+
+- Finalmente, Spark incluye varios ejemplos en el direcitorio `ejemplos` ([Scala]({{site.SPARK_GITHUB_URL}}/tree/master/examples/src/main/scala/org/apache/spark/examples),
+ [Java]({{site.SPARK_GITHUB_URL}}/tree/master/examples/src/main/java/org/apache/spark/examples),
+ [Python]({{site.SPARK_GITHUB_URL}}/tree/master/examples/src/main/python),
+ [R]({{site.SPARK_GITHUB_URL}}/tree/master/examples/src/main/r)). Puedes correrlos así:
+
+ ```
+ # For Scala and Java, use run-example:
+./bin/run-example SparkPi
+
+# For Python examples, use spark-submit directly:
+./bin/spark-submit examples/src/main/python/pi.py
+
+# For R examples, use spark-submit directly:
+./bin/spark-submit examples/src/main/r/dataframe.R
+ ```
