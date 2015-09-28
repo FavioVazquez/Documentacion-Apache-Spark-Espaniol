@@ -137,3 +137,43 @@ en el archivo como un RDD de pares (String, Int). Para colectar las palabras en 
 scala> wordCounts.collect()
 res6: Array[(String, Int)] = Array((means,1), (under,2), (this,3), (Because,1), (Python,2), (agree,1), (cluster.,1), ...)
 ```
+
+#### En Python:
+
+```
+>>> textFile.map(lambda line: len(line.split())).reduce(lambda a, b: a if (a > b) else b)
+15
+```
+
+Esto primero mapea una línea a un valor entero, creado un nuevo RDD. `reduce` es llamado en ese RDD para encontrar la mayor cuenta en una línea. Los argumentos `map` y `reduce` son [funciones anónimas(lambdas)](https://docs.python.org/2/reference/expressions.html#lambda) de Python, pero también podemos pasar cualquier
+función de alto nivel de Python que queramos. Por ejemplo, definiremos una función `max` para hacer más fácil de entender este código:
+
+```
+>>> def max(a, b):
+...     if a > b:
+...         return a
+...     else:
+...         return b
+...
+
+>>> textFile.map(lambda line: len(line.split())).reduce(max)
+15
+```
+
+Un patrón común para flujo de datos es MapReduce, popularizado
+por Hadoop. Spark puede implementar flujos de MapReduce fácilmente:
+
+```
+>>> wordCounts = textFile.flatMap(lambda line: line.split()).map(lambda word: (word, 1)).reduceByKey(lambda a, b: a+b)
+```
+
+Aquí, hemos combinado las transformaciones [flatMap](http://spark.apache.org/docs/latest/programming-guide.html#transformations), [map](http://spark.apache.org/docs/latest/programming-guide.html#transformations) y [reduceByKey](http://spark.apache.org/docs/latest/programming-guide.html#transformations) para computar las cuentas por palabra
+en el archivo como un RDD de pares (string, int). Para colectar las palabras en nuestra consola, podemos usar la acción
+[collect](http://spark.apache.org/docs/latest/programming-guide.html#actions):
+
+```
+>>> wordCounts.collect()
+[(u'and', 9), (u'A', 1), (u'webpage', 1), (u'README', 1), (u'Note', 1), (u'"local"', 1), (u'variable', 1), ...]
+```
+
+## Almacenamiento en Caché [Caching]
