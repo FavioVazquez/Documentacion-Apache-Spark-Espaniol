@@ -63,7 +63,7 @@ res1: String = # Apache Spark
 u'# Apache Spark'
 ```
 
-Usemos ahora una transformación. usaremos la transformación [filter](http://spark.apache.org/docs/latest/programming-guide.html#transformatio), para devolver un nuevo RDD con un subconjunto de los elementos en el archivo:
+Usemos ahora una transformación. usaremos la transformación [filter](http://spark.apache.org/docs/latest/programming-guide.html#transformations), para devolver un nuevo RDD con un subconjunto de los elementos en el archivo:
 
 
 #### En Scala:
@@ -86,11 +86,54 @@ Podemos encadenar estas transformaciones y acciones:
 ```
 scala> textFile.filter(line => line.contains("Spark")).count() // How many lines contain "Spark"?
 res3: Long = 15
-
 ```
+
 #### En Python:
 
 ```
 >>> textFile.filter(lambda line: "Spark" in line).count() # How many lines contain "Spark"?
 15
+```
+
+## Más sobre operaciones sobre RDD
+
+#### *Esta sección se hará primero para Scala y luego para Python.*
+
+Las acciones y transformaciones de RDDs pueden ser usadas para
+computaciones complejas. Digamos que queremos encontrar la línea con la mayor cantidad de palabras:
+
+#### En Scala:
+
+```
+scala> textFile.map(line => line.split(" ").size).reduce((a, b) => if (a > b) a else b)
+res4: Long = 15
+```
+
+Esto primero mapea una línea a un valor entero, creando un nuevo RDD.  `reduce` es llamado en ese RDD para encontrar la mayor cuenta en una línea. Los argumentos `map` y `reduce` son literales de función (clousures), y pueden usar cualquier característica o libería de Scala o Java. Por ejemplo, podemos llamar fácilmente funciones declaradas en otra parte. Usaremos
+la función `Math.max()` para hacer más fácil de entender este
+código:
+
+```
+scala> import java.lang.Math
+import java.lang.Math
+
+scala> textFile.map(line => line.split(" ").size).reduce((a, b) => Math.max(a, b))
+res5: Int = 15
+```
+
+Un patrón común para flujo de datos es MapReduce, popularizado
+por Hadoop. Spark puede implementar flujos de MapReduce fácilmente:
+
+```
+scala> val wordCounts = textFile.flatMap(line => line.split(" ")).map(word => (word, 1)).reduceByKey((a, b) => a + b)
+wordCounts: spark.RDD[(String, Int)] = spark.ShuffledAggregatedRDD@71f027b8
+```
+
+Aquí, hemos combinado las transformaciones [flatMap](http://spark.apache.org/docs/latest/programming-guide.html#transformations), [map](http://spark.apache.org/docs/latest/programming-guide.html#transformations) y [reduceByKey](http://spark.apache.org/docs/latest/programming-guide.html#transformations) para computar las cuentas por palabra
+en el archivo como un RDD de pares (String, Int). Para colectar las palabras en nuestra consola, podemos usar la acción
+[collect](http://spark.apache.org/docs/latest/programming-guide.html#actions):
+
+```
+scala> wordCounts.collect()
+res6: Array[(String, Int)] = Array((means,1), (under,2), (this,3), (Because,1), (Python,2), (agree,1), (cluster.,1), ...)
 ```
