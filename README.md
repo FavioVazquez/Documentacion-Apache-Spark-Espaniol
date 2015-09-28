@@ -6,6 +6,10 @@ La documentación oficial está construida para ser compilada con Jekyll, pienso
 
 Este repositorio lo construyo con la idea de que las personas interesadas puedan contribuir y ayudar a hacer crecer la documentación.
 
+Por ahora solo existe la traducción del Quick Start de Spark y puede encontrarse en el siguiente link:
+
+[Spark Quick Start](https://github.com/FavioVazquez/Documentacion-Apache-Spark-Espaniol/blob/master/quick-start.md)
+
 ## ¿Por qué traducir la documentación?
 
 Para nadie es un secreto que para triunfar en el mundo de la computación hay que saber hablar inglés, y principalmente escribir en inglés. Los códigos y lenguajes están hechos para interactuar con el usuario en este idioma, y de verdad recomiendo que comiencen a escribir sus códigos, variables, comentarios, comletamente en inglés ya que verán que aumentará la legibildad de los mismos, y la productividad ya que solo pensarán en un lenguaje que es el mismo para el cual está hecho el lenguaje. Aparte que las documentaciones y ejemplos están en su mayoría en inglés, así que es importante que lo conozcan bien.
