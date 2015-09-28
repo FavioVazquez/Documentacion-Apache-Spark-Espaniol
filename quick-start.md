@@ -29,14 +29,14 @@ texto del archivo README en el directorio fuente de Spark:
 
 #### En scala:
 
-```
+```java
 scala> val textfile = sc.textfile("readme.md")
 textfile: spark.rdd[string] = spark.mappedrdd@2ee9b6e3
 ```
 
 ##### En Python:
 
-```
+```python
 >>> textFile = sc.textFile("README.md")
 ```
 
@@ -45,7 +45,7 @@ Los RDDs tienen [acciones](http://spark.apache.org/docs/latest/programming-guide
 
 #### En Scala:
 
-```
+```java
 scala> textFile.count() // Number of items in this RDD
 res0: Long = 126
 
@@ -55,7 +55,7 @@ res1: String = # Apache Spark
 
 #### En Python:
 
-```
+```python
 >>> textFile.count() # Number of items in this RDD
 126
 
@@ -68,14 +68,14 @@ Usemos ahora una transformación. usaremos la transformación [filter](http://sp
 
 #### En Scala:
 
-```
+```java
 scala> val linesWithSpark = textFile.filter(line => line.contains("Spark"))
 linesWithSpark: spark.RDD[String] = spark.FilteredRDD@7dd4af09
 ```
 
 #### En Python:
 
-```
+```python
 >>> linesWithSpark = textFile.filter(lambda line: "Spark" in line)
 ```
 
@@ -83,14 +83,14 @@ Podemos encadenar estas transformaciones y acciones:
 
 #### En Scala:
 
-```
+```java
 scala> textFile.filter(line => line.contains("Spark")).count() // How many lines contain "Spark"?
 res3: Long = 15
 ```
 
 #### En Python:
 
-```
+```python
 >>> textFile.filter(lambda line: "Spark" in line).count() # How many lines contain "Spark"?
 15
 ```
@@ -104,7 +104,7 @@ computaciones complejas. Digamos que queremos encontrar la línea con la mayor c
 
 #### En Scala:
 
-```
+```java
 scala> textFile.map(line => line.split(" ").size).reduce((a, b) => if (a > b) a else b)
 res4: Long = 15
 ```
@@ -113,7 +113,7 @@ Esto primero mapea una línea a un valor entero, creando un nuevo RDD.  `reduce`
 la función `Math.max()` para hacer más fácil de entender este
 código:
 
-```
+```java
 scala> import java.lang.Math
 import java.lang.Math
 
@@ -124,7 +124,7 @@ res5: Int = 15
 Un patrón común para flujo de datos es MapReduce, popularizado
 por Hadoop. Spark puede implementar flujos de MapReduce fácilmente:
 
-```
+```java
 scala> val wordCounts = textFile.flatMap(line => line.split(" ")).map(word => (word, 1)).reduceByKey((a, b) => a + b)
 wordCounts: spark.RDD[(String, Int)] = spark.ShuffledAggregatedRDD@71f027b8
 ```
@@ -133,14 +133,14 @@ Aquí, hemos combinado las transformaciones [flatMap](http://spark.apache.org/do
 en el archivo como un RDD de pares (String, Int). Para colectar las palabras en nuestra consola, podemos usar la acción
 [collect](http://spark.apache.org/docs/latest/programming-guide.html#actions):
 
-```
+```java
 scala> wordCounts.collect()
 res6: Array[(String, Int)] = Array((means,1), (under,2), (this,3), (Because,1), (Python,2), (agree,1), (cluster.,1), ...)
 ```
 
 #### En Python:
 
-```
+```python
 >>> textFile.map(lambda line: len(line.split())).reduce(lambda a, b: a if (a > b) else b)
 15
 ```
@@ -148,7 +148,7 @@ res6: Array[(String, Int)] = Array((means,1), (under,2), (this,3), (Because,1), 
 Esto primero mapea una línea a un valor entero, creado un nuevo RDD. `reduce` es llamado en ese RDD para encontrar la mayor cuenta en una línea. Los argumentos `map` y `reduce` son [funciones anónimas(lambdas)](https://docs.python.org/2/reference/expressions.html#lambda) de Python, pero también podemos pasar cualquier
 función de alto nivel de Python que queramos. Por ejemplo, definiremos una función `max` para hacer más fácil de entender este código:
 
-```
+```python
 >>> def max(a, b):
 ...     if a > b:
 ...         return a
@@ -163,7 +163,7 @@ función de alto nivel de Python que queramos. Por ejemplo, definiremos una func
 Un patrón común para flujo de datos es MapReduce, popularizado
 por Hadoop. Spark puede implementar flujos de MapReduce fácilmente:
 
-```
+```python
 >>> wordCounts = textFile.flatMap(lambda line: line.split()).map(lambda word: (word, 1)).reduceByKey(lambda a, b: a+b)
 ```
 
@@ -194,7 +194,7 @@ scala> linesWithSpark.count()
 res9: Long = 19
 ```
 
-#### EN Python:
+#### En Python:
 
 ```python
 >>> linesWithSpark.cache()
@@ -216,7 +216,7 @@ Supongamos que queremos escribir una aplicación autosuficiente usando la API de
 
 Crearemos una aplicaión de Spark muy simple en Scala - muy simple, de hecho se llama SimpleApp.scala:
 
-```
+```java
 /* SimpleApp.scala */
 import org.apache.spark.SparkContext
 import org.apache.spark.SparkContext._
